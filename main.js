@@ -23,6 +23,8 @@ app.use(express.json())
 
 app.post('/alarm_data', (req, res) => {
     // Handling the POST request and checking it for a valid token
+    var d = new Date().toUTCString()
+    console.log("[ " + d + " ]\nReceived new alarm input from " + req.ip)
     alarm_data = req.body
     if (alarm_data['token'] == settings['token']) {
         parseAlarmData(alarm_data)
@@ -37,7 +39,7 @@ app.post('/alarm_data', (req, res) => {
 function parseAlarmData(data) {
     // Parsing the minutes and hours out of the received alarm info
     time = data['info'].split(':')[0].split('')
-    console.log("Received new alarm input: " + time[1] + "h " + time[0] + "min")
+    console.log("Parsed last alarm input: " + time[1] + "h " + time[0] + "min")
 
     // Checking if the morning_scheduler cron already exists and deleting it
     if (typeof morning_scheduler !== 'undefined') {
@@ -50,8 +52,8 @@ function parseAlarmData(data) {
         r.power()
     })
     morning_scheduler.start()
-    console.log("Successfully scheduled lights for " + time[1] + "h " + time[0] + "min!")
+    console.log("Successfully scheduled lights for " + time[1] + "h " + time[0] + "min!\n--------------------")
 }
 
 const server = app.listen(3000)
-console.log("HTTP-Server listening on 3000")
+console.log("HTTP-Server listening on 3000\n--------------------")

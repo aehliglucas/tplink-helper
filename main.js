@@ -38,8 +38,8 @@ app.post('/alarm_data', (req, res) => {
 
 function parseAlarmData(data) {
     // Parsing the minutes and hours out of the received alarm info
-    time = data['info'].split(':')[0].split('')
-    console.log("Parsed last alarm input: " + time[1] + "h " + time[0] + "min")
+    time = data['info'].split('')
+    console.log("Parsed last alarm input: " + time[0] + time[1] + ":" + time[3] + time[4])
 
     // Checking if the morning_scheduler cron already exists and deleting it
     if (typeof morning_scheduler !== 'undefined') {
@@ -48,11 +48,11 @@ function parseAlarmData(data) {
     } 
 
     // Defining the morning_scheduler cron for turning the lights on based on the alarm info
-    var morning_scheduler = new cron(time[0] + ' '+ time[1] + ' * * *', function() {
+    var morning_scheduler = new cron(time[3] + time[4] + ' '+ time[0] + time[1] + ' * * *', function() {
         r.power()
     })
     morning_scheduler.start()
-    console.log("Successfully scheduled lights for " + time[1] + "h " + time[0] + "min!\n--------------------")
+    console.log("Successfully scheduled lights for " + time[0] + time[1] + ":" + time[3] + time[4] + "! (Cron-schedule: " + time[3] + time[4] + ' '+ time[0] + time[1] + ' * * *' + ")\n--------------------")
 }
 
 const server = app.listen(3000)

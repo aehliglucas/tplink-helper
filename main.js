@@ -64,7 +64,7 @@ function parseAlarmData(data) {
     // Checking if the morning_scheduler cron already exists and deleting it
     if (typeof morning_scheduler !== 'undefined') {
         morning_scheduler.stop()
-        morning_scheduler = ''
+        morning_scheduler = undefined
     } 
 
     // Defining the morning_scheduler cron for turning the lights on based on the alarm info
@@ -78,7 +78,9 @@ function parseAlarmData(data) {
 function disableAlarm() {
     if (typeof morning_scheduler !== 'undefined') {
         morning_scheduler.stop()
-        morning_scheduler = ''
+        morning_scheduler = undefined
+        console.log("Successfully deleted morning scheduler!")
+        console.log(morning_scheduler)
     }
 }
 
